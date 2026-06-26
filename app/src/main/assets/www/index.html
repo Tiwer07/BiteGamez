@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>BiteGamez - Offline Arcade Collection</title>
+    <!-- Material Icons Link for classic responsive arcade visuals -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-theme">
+    <div id="app" class="app-host">
+        <!-- Main Home Dashboard -->
+        <main id="home-screen" class="screen active">
+            <header class="app-header">
+                <div class="header-logo">
+                    <svg class="logo-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width: 38px; height: 38px; flex-shrink: 0;">
+                        <!-- Outer body outline of gaming controller -->
+                        <path d="M 35,26 L 65,26 C 72,26 78,29 82,34 L 85,29 C 86,28 88,28 89,29 C 90,30 90,32 89,33 L 86,39 C 90,45 91,53 89,62 C 87,72 81,80 74,80 C 69,80 65,73 62,64 C 58,56 42,56 38,64 C 35,73 31,80 26,80 C 19,80 13,72 11,62 C 9,53 10,45 14,39 L 11,33 C 10,32 10,30 11,29 C 12,28 14,28 15,29 L 18,34 C 22,29 28,26 35,26 Z" stroke="var(--accent)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                        <!-- Touchpad / Center panel outline -->
+                        <path d="M 38,32 L 62,32 C 63,32 64,33 64,34 L 61,43 C 61,44 60,45 59,45 L 41,45 C 40,45 39,44 39,43 L 36,34 C 36,33 37,32 38,32 Z" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.85" />
+                        <!-- Left D-Pad outline -->
+                        <path d="M 28,41 L 31,41 L 31,46 L 36,46 L 36,49 L 31,49 L 31,54 L 28,54 L 28,49 L 23,49 L 23,46 L 28,46 Z" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round" fill="none" />
+                        <!-- Right buttons diamond layout -->
+                        <circle cx="72" cy="43" r="2.5" stroke="var(--accent)" stroke-width="2.2" fill="none" />
+                        <circle cx="66" cy="49" r="2.5" stroke="var(--accent)" stroke-width="2.2" fill="none" />
+                        <circle cx="78" cy="49" r="2.5" stroke="var(--accent)" stroke-width="2.2" fill="none" />
+                        <circle cx="72" cy="55" r="2.5" stroke="var(--accent)" stroke-width="2.2" fill="none" />
+                        <!-- Twin joysticks rings -->
+                        <circle cx="41" cy="62" r="7" stroke="var(--accent)" stroke-width="2.5" fill="none" />
+                        <circle cx="41" cy="62" r="2.5" stroke="var(--accent)" stroke-width="1.8" fill="none" />
+                        <circle cx="59" cy="62" r="7" stroke="var(--accent)" stroke-width="2.5" fill="none" />
+                        <circle cx="59" cy="62" r="2.5" stroke="var(--accent)" stroke-width="1.8" fill="none" />
+                        <!-- Slanted menu slots -->
+                        <line x1="39" y1="38" x2="43" y2="35" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" opacity="0.6" />
+                        <line x1="61" y1="38" x2="57" y2="35" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" opacity="0.6" />
+                    </svg>
+                    <h1>BiteGamez</h1>
+                </div>
+                <div class="header-actions">
+                    <button id="btn-stats" class="icon-button" aria-label="Statistics">
+                        📊
+                    </button>
+                    <button id="btn-settings" class="icon-button" aria-label="Settings">
+                        ⚙️
+                    </button>
+                </div>
+            </header>
+
+            <!-- Library and Filter Controls -->
+            <section class="search-section">
+                <div class="search-bar">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="search-input" placeholder="Search 20 offline games...">
+                    <button id="btn-clear-search" class="icon-button hidden">
+                        ❌
+                    </button>
+                </div>
+            </section>
+
+            <!-- Recently Played Carousel -->
+            <section id="recent-section" class="recent-played-section hidden">
+                <h2 class="section-title">Recently Played</h2>
+                <div id="recent-list" class="recent-grid">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </section>
+
+            <!-- Favorites Section -->
+            <section id="favorites-section" class="favorites-section hidden">
+                <h2 class="section-title">Your Favorites</h2>
+                <div id="favorites-list" class="games-grid">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </section>
+
+            <!-- Full Game Library -->
+            <section class="library-section">
+                <h2 class="section-title">
+                    <span>All Web Arcade Games</span>
+                    <div class="sort-container" style="display: flex; align-items: center; gap: 8px;">
+                        <span class="sort-label" style="font-size: 11px; font-weight: 500; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">Sort:</span>
+                        <select id="library-sort-select" style="background: var(--border-color); color: var(--text-primary); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 4px 8px; cursor: pointer; font-size: 11px; font-weight: 700; outline: none; transition: all 0.2s; font-family: inherit;">
+                            <option value="default">Default</option>
+                            <option value="recent">Recently Played</option>
+                            <option value="most_played">Most Played</option>
+                            <option value="alpha_az">Alphabetical (A-Z)</option>
+                            <option value="alpha_za">Alphabetical (Z-A)</option>
+                        </select>
+                    </div>
+                </h2>
+                <div id="library-grid" class="games-grid">
+                    <!-- Dynamic Loading -->
+                </div>
+            </section>
+        </main>
+
+        <!-- Dynamic Game Playing Arena -->
+        <section id="game-screen" class="screen">
+            <!-- Universal game HUD -->
+            <div class="game-hud">
+                <div class="hud-left-controls" style="display: flex; gap: 8px; align-items: center;">
+                    <button id="btn-hud-pause" class="icon-button hud-btn" aria-label="Pause Game">
+                        ⏸️
+                    </button>
+                    <button id="btn-hud-help" class="icon-button hud-btn" aria-label="Game Instructions" style="font-size: 18px; display: flex; align-items: center; justify-content: center;">
+                        ❓
+                    </button>
+                    <button id="btn-hud-undo" class="icon-button hud-btn" aria-label="Undo Move" style="background-color: var(--accent-pink); color: white; display: none; width: 44px; height: 44px; border-radius: 50%; font-size: 18px; align-items: center; justify-content: center; box-shadow: 0 0 10px rgba(236, 72, 153, 0.4); border: none;">
+                        ↩️
+                    </button>
+                </div>
+                <div class="hud-stats">
+                    <div id="hud-stat-score" class="hud-stat-item hidden">
+                        <span class="hud-label">SCORE</span>
+                        <span id="hud-val-score" class="hud-val">0</span>
+                    </div>
+                    <div id="hud-stat-best" class="hud-stat-item hidden">
+                        <span class="hud-label">BEST</span>
+                        <span id="hud-val-best" class="hud-val">0</span>
+                    </div>
+                    <div id="hud-stat-lives" class="hud-stat-item hidden">
+                        <span class="hud-label">LIVES</span>
+                        <span id="hud-val-lives" class="hud-val">❤️ ❤️ ❤️</span>
+                    </div>
+                    <div id="hud-stat-level" class="hud-stat-item hidden">
+                        <span class="hud-label">LEVEL</span>
+                        <span id="hud-val-level" class="hud-val">1</span>
+                    </div>
+                    <div id="hud-stat-timer" class="hud-stat-item hidden">
+                        <span class="hud-label">TIME</span>
+                        <span id="hud-val-timer" class="hud-val">00:00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Game Context Area -->
+            <div id="game-arena">
+                <!-- Loaded game injects its canvas/HTML content here -->
+            </div>
+        </section>
+
+        <!-- Popups & Modals Overlay Wrapper -->
+        <div id="modal-container" class="modal-overlay hidden">
+            <!-- 1. Settings Dialog -->
+            <div id="modal-settings" class="modal-card hidden">
+                <div class="modal-header">
+                    <h2>Arcade Settings</h2>
+                    <button class="btn-close-modal icon-button">❌</button>
+                </div>
+                <div class="settings-list">
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <span class="setting-icon">🔊</span>
+                            <div>
+                                <h3>Sound Effects</h3>
+                                <p>In-game tactile feedback sounds</p>
+                            </div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="setting-sfx" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <span class="setting-icon">🎵</span>
+                            <div>
+                                <h3>Arcade Music</h3>
+                                <p>Synthesized background tracker</p>
+                            </div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="setting-music" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <span class="setting-icon">🌙</span>
+                            <div>
+                                <h3>Dark Theme</h3>
+                                <p>Adjust theme colors dynamically</p>
+                            </div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="setting-theme" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <button id="btn-reset-data" class="danger-button">
+                        <span>🗑️</span>
+                        Reset All Saved Data
+                    </button>
+                </div>
+            </div>
+
+            <!-- 2. Statistics Dialog -->
+            <div id="modal-statistics" class="modal-card hidden">
+                <div class="modal-header">
+                    <h2>Arcade Statistics</h2>
+                    <button class="btn-close-modal icon-button">❌</button>
+                </div>
+                <!-- Global Stats -->
+                <div class="global-stats-summary">
+                    <div class="global-stat-card">
+                        <span class="stat-number" id="stat-total-played">0</span>
+                        <span class="stat-desc">Games Played</span>
+                    </div>
+                    <div class="global-stat-card">
+                        <span class="stat-number" id="stat-total-time">0m</span>
+                        <span class="stat-desc">Play Time</span>
+                    </div>
+                </div>
+                <!-- Game Detailed Table -->
+                <div class="stats-table-wrapper">
+                    <h3>Game Records</h3>
+                    <table class="stats-table">
+                        <thead>
+                            <tr>
+                                <th>Game</th>
+                                <th class="text-right">Best Score/Time</th>
+                            </tr>
+                        </thead>
+                        <tbody id="stats-table-body">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 3. Pause Overlay -->
+            <div id="modal-pause" class="modal-card hidden">
+                <h2 class="arcade-title-neon">GAME PAUSED</h2>
+                <div class="button-stack">
+                    <button id="btn-pause-resume" class="arcade-button primary">
+                        ▶️ Resume
+                    </button>
+                    <button id="btn-pause-undo" class="arcade-button" style="background-color: var(--accent-pink); color: white; display: none; border: 1px solid pink; box-shadow: 0 0 10px rgba(236, 72, 153, 0.4);">
+                        ↩️ Undo Move
+                    </button>
+                    <button id="btn-pause-restart" class="arcade-button">
+                        🔄 Restart Game
+                    </button>
+                    <button id="btn-pause-settings" class="arcade-button">
+                        ⚙️ Settings
+                    </button>
+                    <button id="btn-pause-instructions" class="arcade-button">
+                        ❓ How to Play
+                    </button>
+                    <button id="btn-pause-menu" class="arcade-button danger">
+                        🏠 Return to Menu
+                    </button>
+                </div>
+            </div>
+
+            <!-- 4. Exit Confirmation -->
+            <div id="modal-confirm-exit" class="modal-card hidden">
+                <h2>Leave Game?</h2>
+                <p class="modal-description">Are you sure you want to leave this game? Your active session progress will be lost.</p>
+                <div class="button-group">
+                    <button id="btn-exit-cancel" class="arcade-button py-2">Continue Playing</button>
+                    <button id="btn-exit-confirm" class="arcade-button danger py-2">Leave Game</button>
+                </div>
+            </div>
+
+            <!-- 5. Restart Confirmation -->
+            <div id="modal-confirm-restart" class="modal-card hidden">
+                <h2>Restart Current Game?</h2>
+                <p class="modal-description">This will restart your current playthrough. Are you sure you want to reset?</p>
+                <div class="button-group">
+                    <button id="btn-restart-cancel" class="arcade-button py-2">Cancel</button>
+                    <button id="btn-restart-confirm" class="arcade-button primary py-2">Restart</button>
+                </div>
+            </div>
+
+            <!-- 5.5. Reset Data Confirmation -->
+            <div id="modal-confirm-reset" class="modal-card hidden">
+                <h2 style="color: var(--accent-pink);">Delete All Saved Data?</h2>
+                <p class="modal-description">This will permanently delete your highscores, favorites, play statistics, and custom settings. <br><strong style="color: var(--accent-pink);">This action is permanent and cannot be undone!</strong></p>
+                <div class="button-group">
+                    <button id="btn-reset-cancel" class="arcade-button py-2 flex-1">Cancel & Keep</button>
+                    <button id="btn-reset-confirm" class="arcade-button danger py-2 flex-1" disabled style="opacity: 0.5; cursor: not-allowed; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <span>🗑️</span> Delete (5s)
+                    </button>
+                </div>
+            </div>
+
+            <!-- 6. Universal Game Over Overlay -->
+            <div id="modal-gameover" class="modal-card hidden">
+                <h1 id="gameover-title" class="arcade-title-neon gameover-title">GAME OVER</h1>
+                
+                <!-- Personal Best Notification (Shown only when record broken!) -->
+                <div id="gameover-pb-badge" class="pb-badge hidden">
+                    <span class="sparkle">✨</span>
+                    <div class="pb-badge-text">
+                        <p class="pb-title">NEW PERSONAL BEST!</p>
+                        <p class="pb-details">Previous: <span id="gameover-prev-best">0</span></p>
+                    </div>
+                    <span class="sparkle">✨</span>
+                </div>
+
+                <div class="gameover-stats">
+                    <div class="gameover-stat">
+                        <span class="label">FINAL SCORE</span>
+                        <span id="gameover-val-score" class="val">0</span>
+                    </div>
+                    <div class="gameover-stat">
+                        <span class="label">BEST SCORE</span>
+                        <span id="gameover-val-best" class="val">0</span>
+                    </div>
+                    <div class="gameover-stat">
+                        <span class="label">TIME PLAYED</span>
+                        <span id="gameover-val-time" class="val">0s</span>
+                    </div>
+                </div>
+
+                <div class="button-group pt-4">
+                    <button id="btn-gameover-replay" class="arcade-button primary flex-1">
+                        🔄 Play Again
+                    </button>
+                    <button id="btn-gameover-menu" class="arcade-button flex-1">
+                        🏠 Main Menu
+                    </button>
+                </div>
+            </div>
+
+            <!-- 7. Game Instructions Modal -->
+            <div id="modal-instructions" class="modal-card hidden" style="border: 1px solid var(--accent-light);">
+                <div style="text-align: center;">
+                    <span id="instruction-game-icon" style="font-size: 40px; filter: drop-shadow(0 0 8px rgba(168,85,247,0.4));">🎮</span>
+                    <h2 id="instruction-game-title" class="arcade-title-neon" style="font-size: 20px; line-height: 1.2; margin-top: 8px;">GAME INSTRUCTIONS</h2>
+                </div>
+                
+                <div style="display: flex; flex-direction: column; gap: 12px; font-size: 13px; text-align: left; max-height: 240px; overflow-y: auto; padding-right: 4px;">
+                    <div>
+                        <strong style="color: var(--accent-light); text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px;">🎯 Objective:</strong>
+                        <p id="instruction-val-objective" style="margin: 2px 0 0 0; color: var(--text-primary); line-height: 1.4;"></p>
+                    </div>
+                    <div>
+                        <strong style="color: var(--accent-light); text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px;">🕹️ Controls:</strong>
+                        <p id="instruction-val-controls" style="margin: 2px 0 0 0; color: var(--text-primary); line-height: 1.4;"></p>
+                    </div>
+                    <div>
+                        <strong style="color: var(--accent-light); text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px;">🏆 To Win:</strong>
+                        <p id="instruction-val-win" style="margin: 2px 0 0 0; color: var(--text-primary); line-height: 1.4;"></p>
+                    </div>
+                    <div>
+                        <strong style="color: var(--accent-light); text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px;">💀 Game Over:</strong>
+                        <p id="instruction-val-gameover" style="margin: 2px 0 0 0; color: var(--text-primary); line-height: 1.4;"></p>
+                    </div>
+                </div>
+                
+                <div id="instruction-checkbox-container" style="display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 12px; border-top: 1px solid var(--border-color); padding-top: 12px; margin-top: 4px;">
+                    <input type="checkbox" id="chk-instructions-skip" style="width: 16px; height: 16px; accent-color: var(--accent-light); cursor: pointer;">
+                    <label for="chk-instructions-skip" style="cursor: pointer; color: var(--text-secondary); -webkit-user-select: none; user-select: none;">Don't show instructions again</label>
+                </div>
+                
+                <button id="btn-instructions-start" class="arcade-button primary" style="width: 100%; font-weight: bold; font-size: 14px; padding: 12px;">
+                    🎮 START GAME
+                </button>
+            </div>
+        </div>
+    </div>
+    <script src="sound.js"></script>
+    <script src="games_p1.js"></script>
+    <script src="games_p2.js"></script>
+    <script src="games_p3.js"></script>
+    <script src="games_p4.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

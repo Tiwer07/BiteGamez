@@ -1,0 +1,6 @@
+{
+  "name": "BiteGamez",
+  "description": "Offline Multi-Game Arcade Collection including 20 classic games wrapper with a beautiful colorful UI.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

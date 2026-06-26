@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    
+    <!-- Outer glow effect styled as neon semi-opaque backups -->
+    <group
+        android:translateX="19"
+        android:translateY="19"
+        android:scaleX="0.70"
+        android:scaleY="0.70">
+        
+        <!-- Outer body of tech-savvy futuristic console controller -->
+        <path
+            android:pathData="M 35,26 L 65,26 C 72,26 78,29 82,34 L 85,29 C 86,28 88,28 89,29 C 90,30 90,32 89,33 L 86,39 C 90,45 91,53 89,62 C 87,72 81,80 74,80 C 69,80 65,73 62,64 C 58,56 42,56 38,64 C 35,73 31,80 26,80 C 19,80 13,72 11,62 C 9,53 10,45 14,39 L 11,33 C 10,32 10,30 11,29 C 12,28 14,28 15,29 L 18,34 C 22,29 28,26 35,26 Z"
+            android:strokeColor="#22C55E"
+            android:strokeWidth="3.5"
+            android:strokeLineCap="round"
+            android:strokeLineJoin="round"
+            android:fillColor="#00000000" />
+            
+        <!-- Touchpad / Center panel outline -->
+        <path
+            android:pathData="M 38,32 L 62,32 C 63,32 64,33 64,34 L 61,43 C 61,44 60,45 59,45 L 41,45 C 40,45 39,44 39,43 L 36,34 C 36,33 37,32 38,32 Z"
+            android:strokeColor="#22C55E"
+            android:strokeWidth="2"
+            android:strokeLineCap="round"
+            android:strokeLineJoin="round"
+            android:fillColor="#00000000"
+            android:strokeAlpha="0.85" />
+            
+        <!-- Left D-Pad outline -->
+        <path
+            android:pathData="M 28,41 L 31,41 L 31,46 L 36,46 L 36,49 L 31,49 L 31,54 L 28,54 L 28,49 L 23,49 L 23,46 L 28,46 Z"
+            android:strokeColor="#22C55E"
+            android:strokeWidth="2.5"
+            android:strokeLineJoin="round"
+            android:fillColor="#00000000" />
+            
+        <!-- Right Action buttons (Diamond array) -->
+        <path
+            android:pathData="M 72,40.5 A 2.5,2.5 0,1 1,71.9 40.5 Z"
+            android:strokeColor="#22C55E"
+            android:strokeWidth="2.2"
+            android:fillColor="#00000000" />
+        <path
+            android:pathData="M 66,46.5 A 2.5,2.5 0,1 1,65.9 46.5 Z"
+            android:strokeColor="#22C55E"
+            android:strokeWidth="2.2"
+            android:fillColor="#00000000" />
+        <path
+            android:pathData="M 78,46.5 A 2.5,2.5 0,1 1,77.9 46.5 Z"
+            android:strokeColor="#22C55E"
+            android:strokeWidth="2.2"
+            android:fillColor="#00000000" />
+        <path
+            android:pathData="M 72,52.5 A 2.5,2.5 0,1 1,71.9 52.5 Z"
+            android:strokeColor="#22C55E"
+            android:strokeWidth="2.2"
+            android:fillColor="#00000000" />
+            
+        <!-- Analog joysticks (Symmetrical twin controllers) -->
+        <path
+            android:pathData="M 41,55 A 7,7 0,1 1,40.9 55 Z"
+            android:strokeColor="#22C55E"
+            android:strokeWidth="2.5"
+            android:fillColor="#00000000" />
+        <path
+            android:pathData="M 41,59.5 A 2.5,2.5 0,1 1,40.9 59.5 Z"
+            android:strokeColor="#22C55E"
+            android:strokeWidth="1.8"
+            android:fillColor="#00000000" />
+            
+        <path
+            android:pathData="M 59,55 A 7,7 0,1 1,58.9 55 Z"
+            android:strokeColor="#22C55E"
+            android:strokeWidth="2.5"
+            android:fillColor="#00000000" />
+        <path
+            android:pathData="M 59,59.5 A 2.5,2.5 0,1 1,58.9 59.5 Z"
+            android:strokeColor="#22C55E"
+            android:strokeWidth="1.8"
+            android:fillColor="#00000000" />
+            
+        <!-- Small Slanted System Slots (Select/Start) -->
+        <path
+            android:pathData="M 39,38 L 43,35"
+            android:strokeColor="#22C55E"
+            android:strokeWidth="1.8"
+            android:strokeLineCap="round"
+            android:strokeAlpha="0.6" />
+        <path
+            android:pathData="M 61,38 L 57,35"
+            android:strokeColor="#22C55E"
+            android:strokeWidth="1.8"
+            android:strokeLineCap="round"
+            android:strokeAlpha="0.6" />
+            
+    </group>
+</vector>
