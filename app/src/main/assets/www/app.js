@@ -15,7 +15,16 @@ class ArcadeApp {
         this.recentlyPlayed = [];
         this.highScores = {};
         this.globalStats = { totalPlayed: 0, totalSeconds: 0 };
-        this.settings = { sfx: true, music: true, dark: true };
+        
+        this.settings = { sfx: true, music: true, theme: "system" };
+        if (window.matchMedia) {
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+                if (this.settings.theme === "system") {
+                    this.applyThemeStyle();
+                }
+            });
+        }
+        
         this.playCounts = {};
         this.lastPlayedTimes = {};
         this.currentSort = "default";
@@ -62,6 +71,7 @@ class ArcadeApp {
         if (gameId === "pipeconnect") return "🔧";
         if (gameId === "cloudadventure") return "🎈";
         if (gameId === "fishingfrenzy") return "🎣";
+        if (gameId === "warehouseboy") return "📦";
         
         return mapping[icon] || "🎮";
     }
@@ -91,6 +101,12 @@ class ArcadeApp {
         this.renderAllGrids();
         this.setupMainEvents();
         this.setupDialogEvents();
+        
+        // Initialize and Retroactive check for Achievements
+        if (window.AchievementSystem) {
+            window.AchievementSystem.initializeUI(this);
+            window.AchievementSystem.checkRetroactive(this);
+        }
         
         const totalCount = Object.keys(window.GameCollection || {}).length;
         const searchInput = document.getElementById("search-input");
@@ -140,7 +156,16 @@ class ArcadeApp {
     }
 
     applyThemeStyle() {
-        if (this.settings.dark) {
+        let isDark = true;
+        const currentTheme = this.settings.theme || (this.settings.dark ? "dark" : (this.settings.dark === false ? "light" : "system"));
+        
+        if (currentTheme === "system") {
+            isDark = !window.matchMedia || window.matchMedia('(prefers-color-scheme: dark)').matches;
+        } else {
+            isDark = (currentTheme === "dark");
+        }
+
+        if (isDark) {
             document.body.classList.remove("light-theme");
             document.body.classList.add("dark-theme");
         } else {
@@ -375,13 +400,15 @@ class ArcadeApp {
             this.saveState();
         };
         
-        const themeToggle = document.getElementById("setting-theme");
-        themeToggle.checked = this.settings.dark;
-        themeToggle.onchange = (e) => {
-            this.settings.dark = e.target.checked;
-            this.applyThemeStyle();
-            this.saveState();
-        };
+        const themeSelect = document.getElementById("setting-theme-select");
+        if (themeSelect) {
+            themeSelect.value = this.settings.theme || (this.settings.dark ? "dark" : (this.settings.dark === false ? "light" : "system"));
+            themeSelect.onchange = (e) => {
+                this.settings.theme = e.target.value;
+                this.applyThemeStyle();
+                this.saveState();
+            };
+        }
         
         // Reset button
         document.getElementById("btn-reset-data").onclick = () => {
@@ -630,7 +657,7 @@ class ArcadeApp {
             this.recentlyPlayed = [];
             this.highScores = {};
             this.globalStats = { totalPlayed: 0, totalSeconds: 0 };
-            this.settings = { sfx: true, music: true, dark: true };
+            this.settings = { sfx: true, music: true, theme: "system" };
             this.playCounts = {};
             this.lastPlayedTimes = {};
             this.currentSort = "default";
@@ -639,11 +666,11 @@ class ArcadeApp {
             
             const sfxToggle = document.getElementById("setting-sfx");
             const musicToggle = document.getElementById("setting-music");
-            const themeToggle = document.getElementById("setting-theme");
+            const themeSelect = document.getElementById("setting-theme-select");
             
             if (sfxToggle) sfxToggle.checked = true;
             if (musicToggle) musicToggle.checked = true;
-            if (themeToggle) themeToggle.checked = true;
+            if (themeSelect) themeSelect.value = "system";
             
             const sortSelect = document.getElementById("library-sort-select");
             if (sortSelect) sortSelect.value = "default";
@@ -761,7 +788,7 @@ class ArcadeApp {
         hudTimer.className = game.hasTimer ? "hud-stat-item" : "hud-stat-item hidden";
 
         // Toggle Undo capability buttons
-        const UNDO_SUPPORTED_GAMES = ["sudoku", "2048", "snake", "tetris", "watersort", "breakout", "tictactoe", "minesweeper"];
+        const UNDO_SUPPORTED_GAMES = ["sudoku", "2048", "snake", "tetris", "watersort", "breakout", "tictactoe", "minesweeper", "warehouseboy"];
         const supportsUndo = UNDO_SUPPORTED_GAMES.includes(id);
         
         const btnHudUndo = document.getElementById("btn-hud-undo");
@@ -878,6 +905,10 @@ class ArcadeApp {
             }
         }
         
+        if (window.AchievementSystem) {
+            window.AchievementSystem.checkRetroactive(this, null, id);
+        }
+        
         if (this.activeInstance && this.activeInstance.destroy) {
             this.activeInstance.destroy();
         }
@@ -906,6 +937,10 @@ class ArcadeApp {
             this.highScores[id] = score;
             isNewPB = previousBest > 0; // Highlight if they broke a real non-zero benchmark
             this.saveState();
+        }
+        
+        if (window.AchievementSystem) {
+            window.AchievementSystem.checkRetroactive(this, results, id);
         }
         
         // Global tracking accumulation metrics

@@ -24,15 +24,6 @@ import androidx.compose.ui.viewinterop.AndroidView
 class MainActivity : ComponentActivity() {
     private var webView: WebView? = null
 
-    override fun getApplicationContext(): android.content.Context {
-        val originalContext = super.getApplicationContext()
-        return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
-            originalContext.createAttributionContext("attributionTag")
-        } else {
-            originalContext
-        }
-    }
-
     @SuppressLint("SetJavaScriptEnabled", "ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,12 +71,7 @@ fun WebViewScreen(onWebViewCreated: (WebView) -> Unit) {
     AndroidView(
         modifier = Modifier.fillMaxSize(),
         factory = { context ->
-            val attributionContext = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
-                context.createAttributionContext("attributionTag")
-            } else {
-                context
-            }
-            WebView(attributionContext).apply {
+            WebView(context).apply {
                 layoutParams = ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT

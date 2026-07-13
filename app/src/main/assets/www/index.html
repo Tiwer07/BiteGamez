@@ -179,16 +179,17 @@
 
                     <div class="setting-item">
                         <div class="setting-info">
-                            <span class="setting-icon">🌙</span>
+                            <span class="setting-icon">🌓</span>
                             <div>
-                                <h3>Dark Theme</h3>
-                                <p>Adjust theme colors dynamically</p>
+                                <h3>Theme Mode</h3>
+                                <p>Select Light, Dark, or System theme</p>
                             </div>
                         </div>
-                        <label class="switch">
-                            <input type="checkbox" id="setting-theme" checked>
-                            <span class="slider"></span>
-                        </label>
+                        <select id="setting-theme-select" style="background: var(--border-color); color: var(--text-primary); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 6px 12px; cursor: pointer; font-size: 13px; font-weight: 700; outline: none; transition: all 0.2s; font-family: inherit;">
+                            <option value="light">☀️ Light</option>
+                            <option value="dark">🌙 Dark</option>
+                            <option value="system">🖥️ System</option>
+                        </select>
                     </div>
 
                     <button id="btn-reset-data" class="danger-button">
@@ -199,36 +200,81 @@
             </div>
 
             <!-- 2. Statistics Dialog -->
-            <div id="modal-statistics" class="modal-card hidden">
-                <div class="modal-header">
-                    <h2>Arcade Statistics</h2>
+            <div id="modal-statistics" class="modal-card hidden" style="max-height: 85vh; display: flex; flex-direction: column;">
+                <div class="modal-header" style="flex-shrink: 0;">
+                    <h2>Arcade Statistics & Milestones</h2>
                     <button class="btn-close-modal icon-button">❌</button>
                 </div>
-                <!-- Global Stats -->
-                <div class="global-stats-summary">
-                    <div class="global-stat-card">
-                        <span class="stat-number" id="stat-total-played">0</span>
-                        <span class="stat-desc">Games Played</span>
-                    </div>
-                    <div class="global-stat-card">
-                        <span class="stat-number" id="stat-total-time">0m</span>
-                        <span class="stat-desc">Play Time</span>
-                    </div>
+                
+                <!-- Tab Headers -->
+                <div class="modal-tabs" style="display: flex; border-bottom: 2px solid var(--border-color); margin-bottom: 12px; flex-shrink: 0; gap: 8px;">
+                    <button class="modal-tab-btn active" data-tab="stats" style="flex: 1; padding: 10px; background: none; border: none; border-bottom: 3px solid var(--accent-light); color: var(--text-primary); font-weight: bold; cursor: pointer; transition: all 0.2s;">📊 Stats</button>
+                    <button class="modal-tab-btn" data-tab="achievements" style="flex: 1; padding: 10px; background: none; border: none; border-bottom: 3px solid transparent; color: var(--text-secondary); font-weight: bold; cursor: pointer; transition: all 0.2s;">🏆 Achievements</button>
                 </div>
-                <!-- Game Detailed Table -->
-                <div class="stats-table-wrapper">
-                    <h3>Game Records</h3>
-                    <table class="stats-table">
-                        <thead>
-                            <tr>
-                                <th>Game</th>
-                                <th class="text-right">Best Score/Time</th>
-                            </tr>
-                        </thead>
-                        <tbody id="stats-table-body">
-                            <!-- Populated dynamically -->
-                        </tbody>
-                    </table>
+
+                <div class="modal-tab-container" style="flex: 1; overflow-y: auto; padding-right: 4px;">
+                    <!-- Tab 1: Stats -->
+                    <div id="tab-content-stats" class="tab-content">
+                        <!-- Global Stats -->
+                        <div class="global-stats-summary">
+                            <div class="global-stat-card">
+                                <span class="stat-number" id="stat-total-played">0</span>
+                                <span class="stat-desc">Games Played</span>
+                            </div>
+                            <div class="global-stat-card">
+                                <span class="stat-number" id="stat-total-time">0m</span>
+                                <span class="stat-desc">Play Time</span>
+                            </div>
+                        </div>
+                        <!-- Game Detailed Table -->
+                        <div class="stats-table-wrapper">
+                            <h3>Game Records</h3>
+                            <table class="stats-table">
+                                <thead>
+                                    <tr>
+                                        <th>Game</th>
+                                        <th class="text-right">Best Score/Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="stats-table-body">
+                                    <!-- Populated dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Tab 2: Achievements -->
+                    <div id="tab-content-achievements" class="tab-content hidden" style="display: none;">
+                        <!-- Achievements summary stats -->
+                        <div class="achievements-summary" style="display: flex; gap: 10px; margin-bottom: 12px; background: rgba(255,255,255,0.03); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color);">
+                            <div style="flex: 1; text-align: center;">
+                                <div style="font-size: 11px; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 0.5px;">Unlocked</div>
+                                <div id="achievements-unlocked-count" style="font-size: 20px; font-weight: 900; color: #f59e0b;">0 / 150</div>
+                            </div>
+                            <div style="flex: 1; text-align: center;">
+                                <div style="font-size: 11px; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 0.5px;">Completion</div>
+                                <div id="achievements-completion-percent" style="font-size: 20px; font-weight: 900; color: #10b981;">0%</div>
+                            </div>
+                        </div>
+
+                        <!-- Filters -->
+                        <div class="achievements-filters" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px;">
+                            <div style="display: flex; gap: 4px;">
+                                <button class="ach-filter-btn active" data-filter="all" style="flex: 1; font-size: 11px; padding: 6px; border-radius: 4px; border: 1px solid var(--border-color); background: rgba(255,255,255,0.08); color: white; cursor: pointer;">All</button>
+                                <button class="ach-filter-btn" data-filter="unlocked" style="flex: 1; font-size: 11px; padding: 6px; border-radius: 4px; border: 1px solid var(--border-color); background: none; color: var(--text-secondary); cursor: pointer;">Unlocked</button>
+                                <button class="ach-filter-btn" data-filter="locked" style="flex: 1; font-size: 11px; padding: 6px; border-radius: 4px; border: 1px solid var(--border-color); background: none; color: var(--text-secondary); cursor: pointer;">Locked</button>
+                                <button class="ach-filter-btn" data-filter="bitegamez" style="flex: 1; font-size: 11px; padding: 6px; border-radius: 4px; border: 1px solid var(--border-color); background: none; color: var(--text-secondary); cursor: pointer;">Wide</button>
+                            </div>
+                            <select id="ach-game-filter" style="width: 100%; padding: 8px; background: #1e293b; border: 1px solid var(--border-color); border-radius: 6px; color: white; font-size: 13px; outline: none; cursor: pointer;">
+                                <option value="all">All Games</option>
+                            </select>
+                        </div>
+
+                        <!-- Achievements List -->
+                        <div id="achievements-list" style="display: flex; flex-direction: column; gap: 8px;">
+                            <!-- Dynamically populated achievement cards -->
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -370,6 +416,9 @@
     <script src="games_p2.js"></script>
     <script src="games_p3.js"></script>
     <script src="games_p4.js"></script>
+    <script src="warehouseBoyLevels.js"></script>
+    <script src="games_p5.js"></script>
+    <script src="achievements.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
